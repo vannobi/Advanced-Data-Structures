@@ -1,8 +1,8 @@
 class Point {
-  constructor(x, y, userData) {
+  constructor(x, y) {
     this.x = x;
     this.y = y;
-    this.userData = userData;
+    // this.userData = userData;
   }
 }
 class Rectangle {
@@ -67,7 +67,7 @@ class QuadTree {
       this.capacity
     );
   }
-
+  // insert
   insert(point) {
     // Algoritmo
     // 1: Si el punto no esta en los limites ( boundary ) del quadtree Return
@@ -96,6 +96,20 @@ class QuadTree {
       if (inserted === 0) inserted = this.southwest.insert(point);
       // console.log(this.points);
       return 2;
+    }
+  }
+  query(range, found) {
+    if (this.boundary.intersects(range)) {
+      this.points.forEach((point) => {
+        count++;
+        if (range.contains(point)) found.push(point);
+      });
+      if (this.divided) {
+        this.northeast.query(range, found);
+        this.northwest.query(range, found);
+        this.southeast.query(range, found);
+        this.southwest.query(range, found);
+      }
     }
   }
   show() {
